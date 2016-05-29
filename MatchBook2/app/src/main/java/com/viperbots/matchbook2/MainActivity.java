@@ -1,4 +1,4 @@
-package com.viperbots.matchbook;
+package com.viperbots.matchbook2;
 
 import android.content.Context;
 import android.content.res.Configuration;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,11 +66,11 @@ public class MainActivity extends ActionBarActivity implements Runnable {
             }
         });
 
-        //initDB();
+        initDB();
         //initData(); ============== IMPLEMENT FILE SAVING TO LIMIT DATABASE QUERIES ================
-        //currComp = new Competition(0, "Austin Competition", "Austin, Texas", "May 27, 2016");
-        //refreshData();
-        //populateMatchList();
+        currComp = new Competition(0, "Austin Competition", "Austin, Texas", "May 27, 2016");
+        refreshData();
+        populateMatchList();
     }
 
     @Override
@@ -112,7 +113,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     private void initDB(){
         db = new awsDBHandler();
-        //db.populateMatch(new Match(1,0,6299,4997,8221,4211));
+        db.populateMatch(new Match(1,0,6299,4997,8221,4211));
     }
 
     private void initData(){
@@ -168,6 +169,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     public void populateMatchList(){
         ArrayList<Match> matches = currComp.getMatches();
+        Log.i("MatchBookUI", matches.toString());
         TableLayout matchTable = (TableLayout)findViewById(R.id.matchTableMain);
         for(int i = 0; i < matches.size(); i++){
             LayoutInflater inflater = (LayoutInflater)getApplicationContext().getSystemService
@@ -181,6 +183,7 @@ public class MainActivity extends ActionBarActivity implements Runnable {
 
     public void refreshData(){
         currComp.setMatches(db.getAllMatches(currComp._id));
+        populateMatchList();
     }
 
     @Override
